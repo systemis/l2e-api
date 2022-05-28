@@ -8,13 +8,15 @@ import {
   UseGuards,
   NotFoundException, 
 } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './local.strategy';
 import { LoginAuthDto } from './dto/login.auth.dto';
 import { UserService } from '@/user/user.service';
-
+@ApiBearerAuth('Bearer')
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
