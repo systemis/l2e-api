@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ActivityModule } from './activity/activity.module';
 import { TodoModule } from './todo/todo.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { TodoModule } from './todo/todo.module';
     UserModule, 
     ActivityModule, 
     TodoModule, 
+    AdminModule, 
   ],
   controllers: [AppController],
   providers: [AppService],

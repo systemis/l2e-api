@@ -9,11 +9,11 @@ import {
   UseGuards, 
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 import { CreateTodoDTO } from './dto/create-todo.dto';
 import { GetTodosByTitleDto } from './dto/get-todos-by-title.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { TodoService } from './todo.service';
-import { AuthGuard } from '@nestjs/passport';
 import { JwtStrategy } from '@/auth/jwt.strategy';
 
 @ApiBearerAuth('Bearer')
