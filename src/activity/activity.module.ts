@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ActivityService } from './activity.service';
+import { ActivityController } from './activity.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
 import { TodoModel, TodoSchema } from '@/todo/entities/todo.entity';
 import { UserModel, UserSchema } from '@/user/entities/user.entity';
 import { AuthModel, AuthSchema } from '@/auth/entities/auth.entity';
@@ -11,17 +10,16 @@ import { ActivityAuditLogModel, ActivityAuditLogSchema } from '@/activity/entiti
 
 @Module({
   imports: [
-    ConfigModule, 
     MongooseModule.forFeature([
       { name: UserModel.name, schema: UserSchema },
       { name: TodoModel.name, schema: TodoSchema },
       { name: AuthModel.name, schema: AuthSchema },
       { name: ActivityModel.name, schema: ActivitySchema }, 
       { name: ActivityAuditLogModel.name, schema: ActivityAuditLogSchema }, 
-    ]),
-  ], 
-  providers: [UserService], 
-  exports: [UserService], 
-  controllers: [UserController], 
+    ]), 
+  ],
+  providers: [ActivityService],
+  controllers: [ActivityController],
+  exports: [ActivityService],
 })
-export class UserModule {}
+export class ActivityModule {}

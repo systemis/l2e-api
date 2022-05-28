@@ -17,9 +17,6 @@ export class User {
 @Schema({ timestamps: true, autoIndex: true })
 export class UserModel implements User{
   @Prop({ type: String })
-  id: string; 
-  
-  @Prop({ type: String })
   username: string; 
 
   @Prop({ type: String })

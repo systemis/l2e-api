@@ -6,6 +6,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { ActivityModule } from './activity/activity.module';
+import { TodoModule } from './todo/todo.module';
 
 @Module({
   imports: [
@@ -25,11 +27,14 @@ import { UserModule } from './user/user.module';
           }
         } catch {};
         if (!uri) uri = process.env.MONGO_URI;
+        console.log(uri);
         return { uri };
       }
     }),
     AuthModule, 
-    UserModule
+    UserModule, 
+    ActivityModule, 
+    TodoModule, 
   ],
   controllers: [AppController],
   providers: [AppService],
