@@ -30,15 +30,11 @@ export class LocalStrategy extends PassportStrategy(
     if (!user) {
       throw new UnauthorizedException('USER::NOT::FOUND'); 
     }
-    return this.authService.verifyPassword(user.id, password);
+    return await this.authService.verifyPassword(user.id, password);
   };
 
-  async validate(@Req() req: any) {
-    const { username, password } = req.body as unknown as {
-      username: string;
-      password: string;
-    };
-
-    return this.validateUserByPassword(username, password);
+  async validate(username: string, password: string) {
+    const { user } = await this.validateUserByPassword(username, password);
+    return user;
   }
 }

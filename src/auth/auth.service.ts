@@ -20,6 +20,7 @@ import { AuthJwt } from './entities/jwt.entity'
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { HasingService } from '@/providers/hashing';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -43,7 +44,7 @@ export class AuthService {
       username: user.username,
       email: user.email, 
     }
-
+    
     return {
       access_token: this.jwtService.sign(jwtPayload)
     };
@@ -70,10 +71,12 @@ export class AuthService {
         displayName: registerUserDto.displayName,
       });
 
+      let hashPassword = await bcrypt.hashSync(registerUserDto.credential.password, HashingAlgorithm.BCrypt); 
+      
       authEntity = await this.createAuthEntity({
         userId: user._id, 
         credential: {
-          password: registerUserDto.credential.password, 
+          password: hashPassword, 
           algorithm: HashingAlgorithm.BCrypt,
         },
       })
@@ -119,19 +122,19 @@ export class AuthService {
     
     const auth = await this.findAuthEntityWithUserId(user.id);
     if (!auth) throw new UnauthorizedException();
-
+    
     const { credential } = auth as {
       id: string; 
       credential: PasswordCredential, 
     };
     
     if (credential.algorithm !== HashingAlgorithm.BCrypt) 
-      throw new UnauthorizedException();
-
+    throw new UnauthorizedException();
+    
     const hasher = this.hasingService.getHasher(credential.algorithm);
     
     const isHashValid = await hasher.compare(rawPassword, credential.password);
-
+    
     if (!isHashValid) throw new UnauthorizedException();
 
     return { user };

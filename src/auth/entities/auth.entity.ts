@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 
 export enum HashingAlgorithm {
-  BCrypt = 'HASH_ALGO::BCRYPT',
+  BCrypt=10,
 }
 
 export type PasswordCredential = {
