@@ -13,32 +13,32 @@ import { AdminModule } from './admin/admin.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env', 
-    }), 
+      envFilePath: '.env',
+    }),
     MongooseModule.forRootAsync({
-      imports: [ ConfigModule ],
+      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
-        let uri; 
+        let uri;
         try {
           const env = configService.get<string>('NODE_ENV');
           if (env === 'test') {
-            uri = process.env.TEST_MONGO_URI;
+            uri = await getMemoryServerMongoDbUri();
           } else {
             uri = configService.get<string>('MONGO_URI');
           }
-        } catch {};
+        } catch { };
         if (!uri) uri = process.env.MONGO_URI;
-        console.log(uri);
+
         return { uri };
       }
     }),
-    AuthModule, 
-    UserModule, 
-    ActivityModule, 
-    TodoModule, 
-    AdminModule, 
+    AuthModule,
+    UserModule,
+    ActivityModule,
+    TodoModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

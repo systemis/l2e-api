@@ -9,11 +9,11 @@ import { CreateActivityDTO } from './dto/create-activity.dto';
 export class ActivityController {
   constructor(
     private activityService: ActivityService
-  ) {}
+  ) { }
 
   @Post('/')
   async createActivity(@Body() createActivityDTO: CreateActivityDTO) {
-      return await this.activityService.createActivity(createActivityDTO);
+    return await this.activityService.createActivity(createActivityDTO);
   }
 
   @Get('/')
