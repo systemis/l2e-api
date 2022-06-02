@@ -22,7 +22,7 @@ import { AdminModule } from './admin/admin.module';
         try {
           const env = configService.get<string>('NODE_ENV');
           if (env === 'test') {
-            uri = getMemoryServerMongoDbUri();
+            uri = process.env.TEST_MONGO_URI;
           } else {
             uri = configService.get<string>('MONGO_URI');
           }

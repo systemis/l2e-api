@@ -1,13 +1,13 @@
-import { 
-  HttpCode, 
-  HttpStatus, 
-  Request, 
-  Body, 
-  Controller, 
-  Post, 
+import {
+  HttpCode,
+  HttpStatus,
+  Request,
+  Body,
+  Controller,
+  Post,
   UseGuards,
-  Req, 
-  UnauthorizedException, 
+  Req,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
@@ -25,20 +25,20 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private userService: UserService, 
-  ) {}
+    private userService: UserService,
+  ) { }
 
-  
+
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard(LocalStrategy.key))
   @Post('/login')
   async login(@Req() req: any) {
-    const { user } = req; 
+    const { user } = req;
     if (!user) {
       throw new UnauthorizedException();
     }
     const data = await this.authService.generateAccessToken(user);
-    return data; 
+    return data;
   }
 
   @Post('/sign-up')
@@ -49,7 +49,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthGuard(JwtStrategy.key))
-  @Post('/update-password') 
+  @Post('/update-password')
   async updatePassword(@Request() req, @Body() updatePasswordDto: UpdatePasswordDto) {
     const session = req.user;
 
@@ -59,7 +59,7 @@ export class AuthController {
 
     await this.authService.updatePassword(user._id, updatePasswordDto);
     return {
-      msg: 'UPDATE::PASSWORD::SUCCESSFULLY', 
+      msg: 'UPDATE::PASSWORD::SUCCESSFULLY',
     };
   }
 }

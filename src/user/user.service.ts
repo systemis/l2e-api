@@ -1,13 +1,13 @@
-import { 
-  Injectable, 
+import {
+  Injectable,
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { 
-  UserDocument, 
-  UserModel, 
+import {
+  UserDocument,
+  UserModel,
 } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -17,7 +17,7 @@ export class UserService {
   constructor(
     @InjectModel(UserModel.name)
     private UserDocument: Model<UserDocument>
-  ) {}
+  ) { }
 
   async createUser(createUserDto: CreateUserDto) {
     const user = new this.UserDocument(createUserDto);
@@ -45,9 +45,9 @@ export class UserService {
 
   async findByUsernameOrEmail(query: string) {
     return this.UserDocument.findOne({
-      $or: [ {email: query}, { username: query }]
+      $or: [{ email: query }, { username: query }]
     });
-  }; 
+  };
 
   async findById(id: string) {
     return this.UserDocument.findById(id);
