@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ActivityModule } from './activity/activity.module';
 import { TodoModule } from './todo/todo.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { TodoModule } from './todo/todo.module';
         try {
           const env = configService.get<string>('NODE_ENV');
           if (env === 'test') {
-            uri = getMemoryServerMongoDbUri();
+            uri = process.env.TEST_MONGO_URI;
           } else {
             uri = configService.get<string>('MONGO_URI');
           }
@@ -35,6 +36,7 @@ import { TodoModule } from './todo/todo.module';
     UserModule, 
     ActivityModule, 
     TodoModule, 
+    AdminModule, 
   ],
   controllers: [AppController],
   providers: [AppService],

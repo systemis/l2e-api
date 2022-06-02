@@ -8,7 +8,10 @@ import { JwtAuthDto } from './dto/jwt-auth.dto';
 const JwtKey = 'jwt';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(
+  Strategy,
+  JwtKey
+) {
   static key = JwtKey;
   
   constructor(
@@ -22,18 +25,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validateWithJwtCredential(jwtPayload: JwtAuthDto) {
-    const user = this.userService.findById(jwtPayload.id);
+    const user = await this.userService.findById(jwtPayload.id);
     if (!user) throw new UnauthorizedException();
     
     return { user };
   }
 
   async validate(payload: JwtAuthDto) {
-    return { 
-      user: {
-        id: payload?.id, 
-        username: payload?.username, 
-      }
-    };
+    const data = await this.validateWithJwtCredential(payload);
+    return data;
   }
 }

@@ -1,8 +1,9 @@
-import { 
-  Controller, 
-  Get, 
+import {
+  Post,
+  Controller,
+  Get,
   Request,
-  UseGuards 
+  UseGuards
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
@@ -15,10 +16,10 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(
     private userService: UserService
-  ) {} 
+  ) { }
 
   @UseGuards(AuthGuard(JwtStrategy.key))
-  @Get('/profile') 
+  @Get('/profile')
   async getProfile(@Request() req) {
     return req.user;
   }

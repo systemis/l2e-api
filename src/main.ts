@@ -29,7 +29,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
 
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 
   const server = app.getHttpServer();
   const router = server._events.request._router;

@@ -12,7 +12,6 @@ export class User {
   email: string; 
   roles: string[]; 
 }
-
 @Injectable()
 @Schema({ timestamps: true, autoIndex: true })
 export class UserModel implements User{
@@ -21,6 +20,12 @@ export class UserModel implements User{
 
   @Prop({ type: String })
   email: string; 
+
+  @Prop({ type: String })
+  displayName: string; 
+
+  @Prop({ type: String })
+  avatar: string; 
 
   @Prop({ type: Array, enum: UserRole, default: [ UserRole.user ] })
   roles: string[]

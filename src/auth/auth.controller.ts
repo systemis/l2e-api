@@ -1,38 +1,65 @@
-import { 
-  HttpCode, 
-  HttpStatus, 
-  Request, 
-  Body, 
-  Controller, 
-  Post, 
+import {
+  HttpCode,
+  HttpStatus,
+  Request,
+  Body,
+  Controller,
+  Post,
   UseGuards,
-  NotFoundException, 
+  Req,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-
 import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from './auth.service';
-import { LocalStrategy } from './local.strategy';
-import { LoginAuthDto } from './dto/login.auth.dto';
 import { UserService } from '@/user/user.service';
+import { UserDocument } from '@/user/entities/user.entity';
+import { AuthService } from './auth.service';
+import { JwtStrategy } from './jwt.strategy';
+import { LocalStrategy } from './local.strategy'
+import { LoginAuthDto } from './dto/login.auth.dto';
+import { RegisterUserDto } from './dto/register-user.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 @ApiBearerAuth('Bearer')
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private userService: UserService, 
-  ) {}
+    private userService: UserService,
+  ) { }
 
-  @UseGuards(AuthGuard(LocalStrategy.key))
+
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard(LocalStrategy.key))
   @Post('/login')
-  async login(@Request() req, @Body() loginAuthDto: LoginAuthDto) {
-    const user = await this.userService.findByUsernameOrEmail(loginAuthDto.username);
+  async login(@Req() req: any) {
+    const { user } = req;
     if (!user) {
-      throw new NotFoundException();
+      throw new UnauthorizedException();
     }
+    const data = await this.authService.generateAccessToken(user);
+    return data;
+  }
 
-    return await this.authService.generateAccessToken(user);
+  @Post('/sign-up')
+  async signUpUser(@Body() registerUserDto: RegisterUserDto) {
+    const result = await this.authService.registerUser(registerUserDto);
+    return result;
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthGuard(JwtStrategy.key))
+  @Post('/update-password')
+  async updatePassword(@Request() req, @Body() updatePasswordDto: UpdatePasswordDto) {
+    const session = req.user;
+
+    const { user } = session as unknown as {
+      user: UserDocument;
+    };
+
+    await this.authService.updatePassword(user._id, updatePasswordDto);
+    return {
+      msg: 'UPDATE::PASSWORD::SUCCESSFULLY',
+    };
   }
 }
