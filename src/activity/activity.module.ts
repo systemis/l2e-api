@@ -14,12 +14,12 @@ import { ActivityAuditLogModel, ActivityAuditLogSchema } from '@/activity/entiti
       { name: UserModel.name, schema: UserSchema },
       { name: TodoModel.name, schema: TodoSchema },
       { name: AuthModel.name, schema: AuthSchema },
-      { name: ActivityModel.name, schema: ActivitySchema }, 
-      { name: ActivityAuditLogModel.name, schema: ActivityAuditLogSchema }, 
-    ]), 
+      { name: ActivityModel.name, schema: ActivitySchema },
+      { name: ActivityAuditLogModel.name, schema: ActivityAuditLogSchema },
+    ]),
   ],
   providers: [ActivityService],
   controllers: [ActivityController],
   exports: [ActivityService],
 })
-export class ActivityModule {}
+export class ActivityModule { }

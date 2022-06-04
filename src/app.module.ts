@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { ActivityModule } from './activity/activity.module';
 import { TodoModule } from './todo/todo.module';
 import { AdminModule } from './admin/admin.module';
+import { TransferAuditLogModule } from './transfer-audit-log/transfer-audit-log.module';
 
 @Module({
   imports: [
@@ -33,10 +34,11 @@ import { AdminModule } from './admin/admin.module';
       }
     }),
     AuthModule,
+    AdminModule,
     UserModule,
     ActivityModule,
     TodoModule,
-    AdminModule,
+    TransferAuditLogModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -18,19 +18,19 @@ import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   providers: [
-    AuthService, 
-    LocalStrategy, 
-    JwtStrategy, 
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
     HasingService,
   ],
   imports: [
-    ConfigModule, 
+    ConfigModule,
     MongooseModule.forFeature([
       { name: UserModel.name, schema: UserSchema },
       { name: AuthModel.name, schema: AuthSchema },
       { name: TodoModel.name, schema: TodoSchema },
-      { name: ActivityModel.name, schema: ActivitySchema }, 
-      { name: ActivityAuditLogModel.name, schema: ActivityAuditLogSchema }, 
+      { name: ActivityModel.name, schema: ActivitySchema },
+      { name: ActivityAuditLogModel.name, schema: ActivityAuditLogSchema },
     ]),
     JwtModule.register({
       secret: jwtConstants.secret,
@@ -39,7 +39,10 @@ import { JwtStrategy } from './jwt.strategy';
     UserModule,
     PassportModule,
   ],
-  exports: [AuthService],
+  exports: [
+    AuthService,
+    JwtModule,
+  ],
   controllers: [AuthController]
 })
-export class AuthModule {}
+export class AuthModule { }
