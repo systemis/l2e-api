@@ -43,6 +43,18 @@ export class UserService {
     return this.findById(userId);
   }
 
+  async validate(username: string, email: string) {
+    if (await this.findByUsernameOrEmail(username)) {
+      throw new BadRequestException('USER::USERNAME:EXISTS');
+    }
+
+    if (await this.findByUsernameOrEmail(email)) {
+      throw new BadRequestException('USER::EMAIL:EXISTS');
+    }
+
+    return true;
+  }
+
   async findByUsernameOrEmail(query: string) {
     return this.UserDocument.findOne({
       $or: [{ email: query }, { username: query }]

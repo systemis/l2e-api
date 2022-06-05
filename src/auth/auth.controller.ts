@@ -11,12 +11,10 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { UserService } from '@/user/user.service';
 import { UserDocument } from '@/user/entities/user.entity';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy'
-import { LoginAuthDto } from './dto/login.auth.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 @ApiBearerAuth('Bearer')
@@ -25,7 +23,6 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private userService: UserService,
   ) { }
 
 

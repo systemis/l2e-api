@@ -15,15 +15,13 @@ export class TestHelper {
     return new Promise(async (resolve) => {
       const uri = await getMemoryServerMongoDbUri();
       mongoose.connect(uri, async () => {
-        console.log('connected with uri', uri);
         await mongoose.connection.db.dropDatabase();
-        console.log('dropped with uri', uri);
         resolve(true);
       });
     });
   }
 
-  public async bootTestingApp(mongoUri: string) {
+  public async bootTestingApp() {
     await this.cleanDb();
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -35,7 +33,7 @@ export class TestHelper {
 
     this.app = moduleFixture.createNestApplication();
 
-    await this.app.init(); 
+    await this.app.init();
   }
 
   public async shutDownTestingApp() {

@@ -1,5 +1,17 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+  SetMetadata,
+} from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtStrategy } from '@/auth/jwt.strategy';
+import { RoleGaurd } from '@/auth/roles-guard.guard';
+import { UserRole, UserDocument } from '@/user/entities/user.entity';
 import { ActivityService } from './activity.service';
 import { CreateActivityDTO } from './dto/create-activity.dto';
 
@@ -9,17 +21,21 @@ import { CreateActivityDTO } from './dto/create-activity.dto';
 export class ActivityController {
   constructor(
     private activityService: ActivityService
-  ) {}
+  ) { }
 
-  @Post('/')
-  async createActivity(@Body() createActivityDTO: CreateActivityDTO) {
-      return await this.activityService.createActivity(createActivityDTO);
-  }
 
+  @UseGuards(AuthGuard(JwtStrategy.key), RoleGaurd)
+  @SetMetadata('roles', [UserRole.admin])
   @Get('/')
   async getActivities() {
-    const result = await this.activityService.findActivities();
-    return result;
+    return await this.activityService.findActivities();
+  }
+
+  @UseGuards(AuthGuard(JwtStrategy.key), RoleGaurd)
+  @SetMetadata('roles', [UserRole.admin])
+  @Post('/')
+  async createActivity(@Body() createActivityDTO: CreateActivityDTO) {
+    return await this.activityService.createActivity(createActivityDTO);
   }
 
   @Get('/details/:id')
