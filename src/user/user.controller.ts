@@ -28,7 +28,7 @@ export class UserController {
   @UseGuards(AuthGuard(JwtStrategy.key))
   @Get('/profile')
   async getProfile(@Request() req) {
-    return req.user;
+    return req.user.user;
   }
 
   @UseGuards(AuthGuard(JwtStrategy.key))
