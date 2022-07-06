@@ -27,7 +27,13 @@ export class TodoService {
     todoId: string,
     updateTodoDto: UpdateTodoDto,
   ) {
-    const todo = await this.findTodoByIdAndUserId(userId, todoId);
+    const todo = await this.findTodoByIdAndUserId(todoId);
+
+    console.log('todoId', todoId);
+
+    console.log(todo);
+
+    console.log('updateTodoDto', updateTodoDto);
 
     if (todo.userId !== userId) throw new ForbiddenException();
 
@@ -37,8 +43,8 @@ export class TodoService {
       $set: updateTodoDto,
     };
 
-    await this.todoDocument.updateOne({ userId }, updatedPayload);
-    return this.findTodoByIdAndUserId(userId, todoId);
+    await this.todoDocument.updateOne({ _id: todoId }, updatedPayload);
+    return this.findTodoByIdAndUserId(todoId);
   }
 
   async findTodosByTitle(userId: string, title: string) {
@@ -52,11 +58,8 @@ export class TodoService {
     );
   }
 
-  async findTodoByIdAndUserId(userId: string, todoId: string) {
-    return this.todoDocument.findOne({
-      userId,
-      todoId,
-    });
+  async findTodoByIdAndUserId(todoId: string) {
+    return this.todoDocument.findById(todoId);
   }
 
   async findTodosByUserId(userId: string) {
@@ -69,5 +72,9 @@ export class TodoService {
         sort: 'createdAt',
       },
     );
+  }
+
+  async deleteTodoById(todoId: string) {
+    return this.todoDocument.deleteOne({ _id: todoId });
   }
 }

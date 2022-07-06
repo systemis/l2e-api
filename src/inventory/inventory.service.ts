@@ -7,7 +7,12 @@ import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { CreateInventoryDto } from './dto/create-inventory.dto';
 import { BuyInventoryDto } from './dto/buy-inventory.dto';
-import { InventoryModel, InventoryDocument } from './entities/inventory.entity';
+import {
+  InventoryModel,
+  InventoryDocument,
+  InventoryOwn,
+  Inventory,
+} from './entities/inventory.entity';
 import {
   InventoryAuditLogModel,
   InventoryAuditDocument,
@@ -97,6 +102,51 @@ export class InventoryService {
 
   async findInventoryByTitle(title: string) {
     return this.InventoryDocument.findOne({ title });
+  }
+
+  async findInventoryAuditLogByUserId(userId: string) {
+    return this.InventoryAuditLogDocument.find({ userId });
+  }
+
+  async findInventoryOwn(userId: string) {
+    const inventoryAuditLogs = await this.findInventoryAuditLogByUserId(userId);
+
+    const idHashAmount: Record<string, number> = {};
+
+    inventoryAuditLogs.map((item) => {
+      const id = item.inventoryId.toString();
+      console.log(id);
+      if (idHashAmount[id] !== undefined) {
+        idHashAmount[id] += 1;
+        return;
+      }
+      idHashAmount[id] = 0;
+    });
+
+    console.log(idHashAmount);
+    let inventoryOwns: InventoryOwn[];
+    const session = await this.connection.startSession();
+    await session.withTransaction(async () => {
+      inventoryOwns = await Promise.all(
+        Object.keys(idHashAmount).map(async (id) => {
+          const info = await this.InventoryDocument.findOne({ id });
+          console.log('info', info);
+          return {
+            _id: info._id,
+            title: info.title,
+            image: info.image,
+            price: info.price,
+            type: info.type,
+            amount: info.amount,
+            interactions: info.interactions,
+            ownedAmount: idHashAmount[id],
+          };
+        }),
+      );
+    });
+    session.endSession();
+    console.log(inventoryOwns);
+    return inventoryOwns;
   }
 
   async interactWithInventory(userId: string, inventoryId: string) {

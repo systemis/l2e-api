@@ -16,6 +16,10 @@ export class Inventory {
   amount: number;
 }
 
+export type InventoryOwn = Inventory & {
+  ownedAmount: number;
+};
+
 @Injectable()
 @Schema({ timestamps: true, autoIndex: true })
 export class InventoryModel implements Inventory {

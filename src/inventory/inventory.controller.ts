@@ -65,4 +65,11 @@ export class InventoryController {
       inventoryId: buyInventoryDto.inventoryId,
     });
   }
+
+  @UseGuards(AuthGuard(JwtStrategy.key), RoleGaurd)
+  @Get('/user-inventories')
+  async getUserInventories(@Req() req: any) {
+    const { user } = req?.user;
+    return await this.inventoryService.findInventoryOwn(user?._id);
+  }
 }

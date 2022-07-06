@@ -10,7 +10,9 @@ export enum InventoryStatus {
 export class InventoryAuditLog {
   inventoryId: string;
   userId: string;
+  status: InventoryStatus;
 }
+
 @Injectable()
 @Schema({ timestamps: true, autoIndex: true })
 export class InventoryAuditLogModel implements InventoryAuditLog {
