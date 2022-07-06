@@ -3,33 +3,35 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 export enum UserRole {
-  user="UserRole::User", 
-  admin="UserRole::SystemAdmin", 
+  user = 'UserRole::User',
+  admin = 'UserRole::SystemAdmin',
 }
 
 export class User {
-  username: string; 
-  email: string; 
-  roles: string[]; 
+  username: string;
+  email: string;
+  roles: string[];
+  displayName: string;
+  avatar: string;
 }
 @Injectable()
 @Schema({ timestamps: true, autoIndex: true })
-export class UserModel implements User{
+export class UserModel implements User {
   @Prop({ type: String })
-  username: string; 
+  username: string;
 
   @Prop({ type: String })
-  email: string; 
+  email: string;
 
   @Prop({ type: String })
-  displayName: string; 
+  displayName: string;
 
   @Prop({ type: String })
-  avatar: string; 
+  avatar: string;
 
-  @Prop({ type: Array, enum: UserRole, default: [ UserRole.user ] })
-  roles: string[]
-}; 
+  @Prop({ type: Array, enum: UserRole, default: [UserRole.user] })
+  roles: string[];
+}
 
 export const UserSchema = SchemaFactory.createForClass(UserModel);
 

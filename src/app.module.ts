@@ -27,11 +27,11 @@ import { TransferAuditLogModule } from './transfer-audit-log/transfer-audit-log.
           } else {
             uri = configService.get<string>('MONGO_URI');
           }
-        } catch { };
+        } catch {}
         if (!uri) uri = process.env.MONGO_URI;
 
         return { uri };
-      }
+      },
     }),
     AuthModule,
     AdminModule,
@@ -43,4 +43,4 @@ import { TransferAuditLogModule } from './transfer-audit-log/transfer-audit-log.
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

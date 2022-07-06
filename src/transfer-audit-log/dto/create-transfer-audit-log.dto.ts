@@ -1,8 +1,4 @@
-import {
-  IsString,
-  IsNumber,
-  IsEnum,
-} from 'class-validator';
+import { IsString, IsNumber, IsEnum } from 'class-validator';
 import { TransferType } from '../entities/transfer-audit-log.entity';
 
 export class CreateTransferAuditLogDto {

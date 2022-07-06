@@ -3,7 +3,7 @@ import {
   IsEnum,
   ArrayUnique,
   ValidateNested,
-  IsOptional, 
+  IsOptional,
 } from 'class-validator';
 
 import { PasswordCredential } from './password-credetial.dto';
@@ -22,11 +22,11 @@ export class RegisterUserDto {
 
   @IsOptional()
   @IsString()
-  avatar: string; 
-  
+  avatar: string;
+
   @IsOptional()
   @IsString()
-  displayName: string; 
+  displayName: string;
 
   @ValidateNested()
   credential: PasswordCredential;

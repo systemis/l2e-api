@@ -8,8 +8,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModel, UserSchema } from '@/user/entities/user.entity';
 import { AuthModel, AuthSchema } from '@/auth/entities/auth.entity';
 import { TodoModel, TodoSchema } from '@/todo/entities/todo.entity';
-import { ActivityModel, ActivitySchema } from '@/activity/entities/activity.entity';
-import { ActivityAuditLogModel, ActivityAuditLogSchema } from '@/activity/entities/activity-audit-log.entity';
+import {
+  ActivityModel,
+  ActivitySchema,
+} from '@/activity/entities/activity.entity';
+import {
+  ActivityAuditLogModel,
+  ActivityAuditLogSchema,
+} from '@/activity/entities/activity-audit-log.entity';
 import { HasingService } from '@/providers/hashing';
 import { LocalStrategy } from './local.strategy';
 import { AuthService } from './auth.service';
@@ -17,12 +23,7 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
 
 @Module({
-  providers: [
-    AuthService,
-    LocalStrategy,
-    JwtStrategy,
-    HasingService,
-  ],
+  providers: [AuthService, LocalStrategy, JwtStrategy, HasingService],
   imports: [
     ConfigModule,
     MongooseModule.forFeature([
@@ -39,10 +40,7 @@ import { JwtStrategy } from './jwt.strategy';
     UserModule,
     PassportModule,
   ],
-  exports: [
-    AuthService,
-    JwtModule,
-  ],
-  controllers: [AuthController]
+  exports: [AuthService, JwtModule],
+  controllers: [AuthController],
 })
-export class AuthModule { }
+export class AuthModule {}

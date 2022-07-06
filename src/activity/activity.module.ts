@@ -5,8 +5,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TodoModel, TodoSchema } from '@/todo/entities/todo.entity';
 import { UserModel, UserSchema } from '@/user/entities/user.entity';
 import { AuthModel, AuthSchema } from '@/auth/entities/auth.entity';
-import { ActivityModel, ActivitySchema } from '@/activity/entities/activity.entity';
-import { ActivityAuditLogModel, ActivityAuditLogSchema } from '@/activity/entities/activity-audit-log.entity';
+import {
+  ActivityModel,
+  ActivitySchema,
+} from '@/activity/entities/activity.entity';
+import {
+  ActivityAuditLogModel,
+  ActivityAuditLogSchema,
+} from '@/activity/entities/activity-audit-log.entity';
 
 @Module({
   imports: [
@@ -22,4 +28,4 @@ import { ActivityAuditLogModel, ActivityAuditLogSchema } from '@/activity/entiti
   controllers: [ActivityController],
   exports: [ActivityService],
 })
-export class ActivityModule { }
+export class ActivityModule {}
