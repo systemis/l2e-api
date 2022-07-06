@@ -20,9 +20,7 @@ import { JwtStrategy } from '@/auth/jwt.strategy';
 @ApiTags('todo')
 @Controller('todo')
 export class TodoController {
-  constructor(
-    private todoService: TodoService
-  ) { }
+  constructor(private todoService: TodoService) {}
 
   @UseGuards(AuthGuard(JwtStrategy.key))
   @Post()
@@ -42,9 +40,12 @@ export class TodoController {
   @Get('/title/:title')
   async getTodosByTitle(
     @Request() req,
-    @Body() getTodosByTitleDto: GetTodosByTitleDto
+    @Body() getTodosByTitleDto: GetTodosByTitleDto,
   ) {
-    const todos = await this.todoService.findTodosByTitle(req.user.id, getTodosByTitleDto.title);
+    const todos = await this.todoService.findTodosByTitle(
+      req.user.id,
+      getTodosByTitleDto.title,
+    );
     return todos;
   }
 
@@ -53,9 +54,13 @@ export class TodoController {
   async updateTodo(
     @Request() req,
     @Param('todoId') todoId: string,
-    @Body() updateTodoDto: UpdateTodoDto
+    @Body() updateTodoDto: UpdateTodoDto,
   ) {
-    const updatedResut = await this.todoService.updateTodo(req.user.id, todoId, updateTodoDto);
+    const updatedResut = await this.todoService.updateTodo(
+      req.user.id,
+      todoId,
+      updateTodoDto,
+    );
     return updatedResut;
   }
 }

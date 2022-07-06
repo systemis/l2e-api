@@ -23,6 +23,6 @@ describe('AppController (e2e)', () => {
   it('/ (GET)', () => {
     return request(testHelper.app.getHttpServer())
       .get('/api/user/profile')
-      .expect(200)
+      .expect(200);
   });
 });

@@ -31,7 +31,7 @@ export class AdminController {
     private userService: UserService,
 
     private authService: AuthService,
-  ) { }
+  ) {}
 
   @UseGuards(AuthGuard(JwtStrategy.key), RoleGaurd)
   @SetMetadata('roles', [UserRole.admin])
@@ -45,26 +45,17 @@ export class AdminController {
   @Post('/update-user/:userId')
   async updateUser(
     @Param('userId') userId: string,
-    @Body() updateUserDto: UpdateUserDto
+    @Body() updateUserDto: UpdateUserDto,
   ) {
-    return await this.adminService.updateUser(
-      userId,
-      updateUserDto
-    );
+    return await this.adminService.updateUser(userId, updateUserDto);
   }
 
   @UseGuards(AuthGuard(JwtStrategy.key), RoleGaurd)
   @SetMetadata('roles', [UserRole.admin])
   @HttpCode(HttpStatus.OK)
   @Post('/update-user')
-  async updateProfile(
-    @Request() req,
-    @Body() updateUserDto: UpdateUserDto
-  ) {
-    return await this.adminService.updateUser(
-      req.user.id,
-      updateUserDto
-    );
+  async updateProfile(@Request() req, @Body() updateUserDto: UpdateUserDto) {
+    return await this.adminService.updateUser(req.user.id, updateUserDto);
   }
 
   @UseGuards(AuthGuard(JwtStrategy.key), RoleGaurd)
@@ -72,11 +63,11 @@ export class AdminController {
   @Post('/update-password')
   async updatePassword(
     @Request() req,
-    @Body() updatePasswordDto: UpdatePasswordDto
+    @Body() updatePasswordDto: UpdatePasswordDto,
   ) {
     const result = await this.authService.updatePassword(
       req.user.id,
-      updatePasswordDto
+      updatePasswordDto,
     );
 
     return result;

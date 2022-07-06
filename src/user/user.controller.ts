@@ -14,7 +14,6 @@ import { UserDocument } from './entities/user.entity';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
-
 @ApiBearerAuth('Bearer')
 @ApiTags('user')
 @Controller('user')
@@ -23,7 +22,7 @@ export class UserController {
     private userService: UserService,
 
     private activityService: ActivityService,
-  ) { }
+  ) {}
 
   @UseGuards(AuthGuard(JwtStrategy.key))
   @Get('/profile')
@@ -36,7 +35,7 @@ export class UserController {
   async updateProfile(@Body() createUserDto: CreateUserDto) {
     await this.userService.validate(
       createUserDto.username,
-      createUserDto.email
+      createUserDto.email,
     );
   }
 

@@ -1,8 +1,8 @@
 import { IsString } from 'class-validator';
 
-export class CreateActivityAuditLogDto {
+export class BuyInventoryDto {
   @IsString()
-  activityId: string;
+  inventoryId: string;
 
   @IsString()
   userId: string;

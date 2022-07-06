@@ -4,7 +4,7 @@ import { globalApply } from '@/main';
 import { getMemoryServerMongoDbUri } from '@/helper';
 import { AppModule } from './../src/app.module';
 import mongoose from 'mongoose';
-jest.useFakeTimers()
+jest.useFakeTimers();
 
 export class TestHelper {
   public static TEST_MONGO_URI: string = process.env.TEST_MONGO_URI;

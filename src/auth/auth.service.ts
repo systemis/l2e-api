@@ -16,7 +16,7 @@ import {
 import { RegisterUserDto } from './dto/register-user.dto';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
-import { AuthJwt } from './entities/jwt.entity'
+import { AuthJwt } from './entities/jwt.entity';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { HasingService } from '@/providers/hashing';
@@ -36,17 +36,17 @@ export class AuthService {
     private jwtService: JwtService,
 
     private hasingService: HasingService,
-  ) { }
+  ) {}
 
   async generateAccessToken(user: UserDocument) {
     const jwtPayload: AuthJwt = {
       id: user.id,
       username: user.username,
       email: user.email,
-    }
+    };
 
     return {
-      access_token: this.jwtService.sign(jwtPayload)
+      access_token: this.jwtService.sign(jwtPayload),
     };
   }
 
@@ -55,8 +55,10 @@ export class AuthService {
     let authEntity: AuthDocument;
 
     if (
-      await this.userService.findByUsernameOrEmail(registerUserDto.username) ||
-      await this.userService.findByUsernameOrEmail(registerUserDto.email)
+      (await this.userService.findByUsernameOrEmail(
+        registerUserDto.username,
+      )) ||
+      (await this.userService.findByUsernameOrEmail(registerUserDto.email))
     ) {
       throw new BadRequestException('USER::EXISTS::USERNAME::EMAIL');
     }
@@ -69,9 +71,16 @@ export class AuthService {
         username: registerUserDto.username,
         roles: registerUserDto.roles,
         displayName: registerUserDto.displayName,
+        credit: registerUserDto.credit,
+        gpa: registerUserDto.gpa,
+        class: registerUserDto.class,
+        walletCredential: registerUserDto.walletCredential,
       });
 
-      let hashPassword = await bcrypt.hashSync(registerUserDto.credential.password, HashingAlgorithm.BCrypt);
+      const hashPassword = await bcrypt.hashSync(
+        registerUserDto.credential.password,
+        HashingAlgorithm.BCrypt,
+      );
 
       authEntity = await this.createAuthEntity({
         userId: user._id,
@@ -79,7 +88,7 @@ export class AuthService {
           password: hashPassword,
           algorithm: HashingAlgorithm.BCrypt,
         },
-      })
+      });
     });
 
     await session.endSession();
@@ -93,7 +102,7 @@ export class AuthService {
     try {
       const { user } = await this.verifyPassword(
         userId,
-        updatePasswordDto.oldPassword
+        updatePasswordDto.oldPassword,
       );
 
       await this.AuthDocument.deleteOne({ userId: user._id });
@@ -104,13 +113,15 @@ export class AuthService {
           credential: {
             algorithm: HashingAlgorithm.BCrypt,
             password: updatePasswordDto.newPassword,
-          }
+          },
         });
       });
       await session.endSession();
     } catch (err) {
       if (err instanceof UnauthorizedException) {
-        throw new BadRequestException('UPDATEPASSWORD::FAILED:INCORRECT::OLDPASSWORD');
+        throw new BadRequestException(
+          'UPDATEPASSWORD::FAILED:INCORRECT::OLDPASSWORD',
+        );
       }
       throw err;
     }
@@ -118,14 +129,14 @@ export class AuthService {
 
   async verifyPassword(userId: string, rawPassword: string) {
     const user = await this.userService.findById(userId);
-    if (!user) throw new NotFoundException()
+    if (!user) throw new NotFoundException();
 
     const auth = await this.findAuthEntityWithUserId(user.id);
     if (!auth) throw new UnauthorizedException();
 
     const { credential } = auth as {
       id: string;
-      credential: PasswordCredential,
+      credential: PasswordCredential;
     };
 
     if (credential.algorithm !== HashingAlgorithm.BCrypt)
@@ -148,7 +159,7 @@ export class AuthService {
 
   async findAuthEntityWithUserId(userId: string) {
     return this.AuthDocument.findOne({
-      userId
+      userId,
     });
   }
 }

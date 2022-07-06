@@ -19,10 +19,16 @@ export class ActivityAuditLogModel implements ActivityAuditLog {
   @Prop({ required: true, type: String })
   userId: string;
 
-  @Prop({ type: String, enum: ActivityAuditLogStatus, default: ActivityAuditLogStatus.joining })
+  @Prop({
+    type: String,
+    enum: ActivityAuditLogStatus,
+    default: ActivityAuditLogStatus.joining,
+  })
   status: string;
 }
 
-export const ActivityAuditLogSchema = SchemaFactory.createForClass(ActivityAuditLogModel);
+export const ActivityAuditLogSchema = SchemaFactory.createForClass(
+  ActivityAuditLogModel,
+);
 
 export type ActivityAuditLogDocument = ActivityAuditLog & Document;

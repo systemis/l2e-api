@@ -8,6 +8,7 @@ import {
   IsString,
   IsUrl,
   MaxLength,
+  IsNumber,
 } from 'class-validator';
 
 export class UpdateUserDto {
@@ -16,23 +17,27 @@ export class UpdateUserDto {
     require_protocol: true,
     require_valid_protocol: true,
   })
-  avatar: string;
+  avatar?: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(64)
-  displayName: string;
+  displayName?: string;
 
   @IsOptional()
   @IsEmail()
-  email: string;
+  email?: string;
 
   @IsEnum(UserRole, { each: true })
   @ArrayUnique()
-  roles: string[];
+  roles?: string[];
 
   @IsOptional()
   @IsAlphanumeric()
   @MaxLength(32)
-  username: string;
+  username?: string;
+
+  @IsOptional()
+  @IsNumber()
+  balance?: number;
 }
