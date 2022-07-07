@@ -1,10 +1,7 @@
-import {
-  IsString, 
-  IsNotEmpty,
-} from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
-export class  GetTodosByTitleDto {
-  @IsString()  
+export class GetTodosByTitleDto {
+  @IsString()
   @IsNotEmpty()
-  title: string; 
+  title: string;
 }

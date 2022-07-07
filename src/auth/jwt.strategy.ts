@@ -8,15 +8,10 @@ import { JwtAuthDto } from './dto/jwt-auth.dto';
 const JwtKey = 'jwt';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(
-  Strategy,
-  JwtKey
-) {
+export class JwtStrategy extends PassportStrategy(Strategy, JwtKey) {
   static key = JwtKey;
 
-  constructor(
-    private userService: UserService,
-  ) {
+  constructor(private userService: UserService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,

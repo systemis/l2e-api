@@ -1,7 +1,7 @@
-import { 
-  Injectable, 
+import {
+  Injectable,
   NotFoundException,
-  ForbiddenException, 
+  ForbiddenException,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -11,51 +11,70 @@ import { TodoModel, TodoDocument } from './entities/todo.entity';
 
 @Injectable()
 export class TodoService {
-    constructor(
-        @InjectModel(TodoModel.name) 
-        private todoDocument: Model<TodoDocument>,
-    ) {}
+  constructor(
+    @InjectModel(TodoModel.name)
+    private todoDocument: Model<TodoDocument>,
+  ) {}
 
-    async createTodo(createTodoDTO: CreateTodoDTO) {
-      const todo = new this.todoDocument(createTodoDTO);
-      const newTodo = await todo.save();
-      return newTodo;
-    }
+  async createTodo(createTodoDTO: CreateTodoDTO) {
+    const todo = new this.todoDocument(createTodoDTO);
+    const newTodo = await todo.save();
+    return newTodo;
+  }
 
-    async updateTodo(userId: string, todoId: string, updateTodoDto: UpdateTodoDto) {
-      const todo = await this.findTodoByIdAndUserId(userId, todoId);
+  async updateTodo(
+    userId: string,
+    todoId: string,
+    updateTodoDto: UpdateTodoDto,
+  ) {
+    const todo = await this.findTodoByIdAndUserId(todoId);
 
-      if (todo.userId !== userId) throw new ForbiddenException()
+    console.log('todoId', todoId);
 
-      if (!todo) throw new NotFoundException(); 
+    console.log(todo);
 
-      const updatedPayload = {
-        $set: updateTodoDto, 
-      };
+    console.log('updateTodoDto', updateTodoDto);
 
-      await this.todoDocument.updateOne({ userId }, updatedPayload);
-      return this.findTodoByIdAndUserId(userId, todoId);
+    if (todo.userId !== userId) throw new ForbiddenException();
+
+    if (!todo) throw new NotFoundException();
+
+    const updatedPayload = {
+      $set: updateTodoDto,
     };
 
-    async findTodosByTitle(userId: string, title: string) {
-      return this.todoDocument.find({
-        userId, 
-        title
-      }, {}, { sort: 'createdAt' });
-    }
+    await this.todoDocument.updateOne({ _id: todoId }, updatedPayload);
+    return this.findTodoByIdAndUserId(todoId);
+  }
 
-    async findTodoByIdAndUserId(userId: string, todoId: string) {
-      return this.todoDocument.findOne({ 
-        userId, 
-        todoId,
-      });
-    }
+  async findTodosByTitle(userId: string, title: string) {
+    return this.todoDocument.find(
+      {
+        userId,
+        title,
+      },
+      {},
+      { sort: 'createdAt' },
+    );
+  }
 
-    async findTodosByUserId(userId: string){
-      return this.todoDocument.find({ 
-        userId 
-      }, {}, { 
-        sort: 'createdAt' 
-      });
-    }
+  async findTodoByIdAndUserId(todoId: string) {
+    return this.todoDocument.findById(todoId);
+  }
+
+  async findTodosByUserId(userId: string) {
+    return this.todoDocument.find(
+      {
+        userId,
+      },
+      {},
+      {
+        sort: 'createdAt',
+      },
+    );
+  }
+
+  async deleteTodoById(todoId: string) {
+    return this.todoDocument.deleteOne({ _id: todoId });
+  }
 }

@@ -3,11 +3,12 @@ import {
   IsEnum,
   ArrayUnique,
   ValidateNested,
-  IsOptional, 
+  IsOptional,
+  IsNumber,
 } from 'class-validator';
 
 import { PasswordCredential } from './password-credetial.dto';
-import { UserRole } from '@/user/entities/user.entity';
+import { UserRole, WalletCredential } from '@/user/entities/user.entity';
 
 export class RegisterUserDto {
   @IsString()
@@ -22,12 +23,24 @@ export class RegisterUserDto {
 
   @IsOptional()
   @IsString()
-  avatar: string; 
-  
+  avatar: string;
+
   @IsOptional()
   @IsString()
-  displayName: string; 
+  displayName: string;
 
   @ValidateNested()
   credential: PasswordCredential;
+
+  @ValidateNested()
+  walletCredential: WalletCredential;
+
+  @IsString()
+  class: string;
+
+  @IsNumber()
+  gpa: number;
+
+  @IsNumber()
+  credit: number;
 }

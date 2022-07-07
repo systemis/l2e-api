@@ -4,7 +4,10 @@ import { Model } from 'mongoose';
 import { CreateActivityDTO } from './dto/create-activity.dto';
 import { CreateActivityAuditLogDto } from './dto/create-activity-audit-log.dto';
 import { ActivityModel, ActivityDocument } from './entities/activity.entity';
-import { ActivityAuditLogModel, ActivityAuditLogDocument } from './entities/activity-audit-log.entity'
+import {
+  ActivityAuditLogModel,
+  ActivityAuditLogDocument,
+} from './entities/activity-audit-log.entity';
 
 @Injectable()
 export class ActivityService {
@@ -13,8 +16,8 @@ export class ActivityService {
     private ActivityDocument: Model<ActivityDocument>,
 
     @InjectModel(ActivityAuditLogModel.name)
-    private ActivityAuditLogDocument: Model<ActivityAuditLogDocument>
-  ) { }
+    private ActivityAuditLogDocument: Model<ActivityAuditLogDocument>,
+  ) {}
 
   async createActivity(createActivityDTO: CreateActivityDTO) {
     const activity = new this.ActivityDocument(createActivityDTO);
@@ -22,8 +25,12 @@ export class ActivityService {
     return newActivity;
   }
 
-  async createActivityAuditLog(createActivityAuditLogDto: CreateActivityAuditLogDto) {
-    const activityAuditLog = new this.ActivityAuditLogDocument(createActivityAuditLogDto);
+  async createActivityAuditLog(
+    createActivityAuditLogDto: CreateActivityAuditLogDto,
+  ) {
+    const activityAuditLog = new this.ActivityAuditLogDocument(
+      createActivityAuditLogDto,
+    );
     const newActivityAuditLog = await activityAuditLog.save();
     return newActivityAuditLog;
   }
@@ -38,25 +45,25 @@ export class ActivityService {
 
   async findAuditLogByActivityId(activityId: string) {
     return this.ActivityAuditLogDocument.findOne({
-      activityId
-    })
+      activityId,
+    });
   }
 
   async findAuditLogsByActivityId(activityId: string) {
     return this.ActivityAuditLogDocument.find({
-      activityId
-    })
+      activityId,
+    });
   }
 
   async findAuditLogByUserId(userId: string) {
     return this.ActivityAuditLogDocument.findOne({
-      userId
-    })
+      userId,
+    });
   }
 
   async findAuditLogsByUserId(userId: string) {
     return this.ActivityAuditLogDocument.find({
-      userId
-    })
+      userId,
+    });
   }
 }

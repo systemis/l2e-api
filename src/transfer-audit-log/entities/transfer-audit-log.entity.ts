@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Document } from 'mongoose';
-import {
-  Prop,
-  Schema,
-  SchemaFactory,
-} from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export enum TransferType {
   buyItem = 'TRANSFERTYPE::BUYITEM',
@@ -34,6 +30,8 @@ export class TransferAuditLogModel implements TransferAuditLog {
   amount: number;
 }
 
-export const TransferAuditLogSchema = SchemaFactory.createForClass(TransferAuditLogModel);
+export const TransferAuditLogSchema = SchemaFactory.createForClass(
+  TransferAuditLogModel,
+);
 
-export type TransferAuditLogDocument = TransferAuditLog & Document;; 
+export type TransferAuditLogDocument = TransferAuditLog & Document;

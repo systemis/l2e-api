@@ -1,4 +1,4 @@
-import { UserRole } from '@/user/entities/user.entity';
+import { UserRole, WalletCredential } from '@/user/entities/user.entity';
 import {
   ArrayUnique,
   IsAlphanumeric,
@@ -8,6 +8,8 @@ import {
   IsString,
   IsUrl,
   MaxLength,
+  IsNumber,
+  ValidateNested,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -35,4 +37,16 @@ export class CreateUserDto {
   @IsAlphanumeric()
   @MaxLength(32)
   username: string;
+
+  @IsString()
+  class: string;
+
+  @IsNumber()
+  gpa: number;
+
+  @IsNumber()
+  credit: number;
+
+  @ValidateNested()
+  walletCredential: WalletCredential;
 }

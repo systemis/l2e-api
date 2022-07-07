@@ -14,17 +14,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserDocument } from '@/user/entities/user.entity';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
-import { LocalStrategy } from './local.strategy'
+import { LocalStrategy } from './local.strategy';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 @ApiBearerAuth('Bearer')
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private authService: AuthService,
-  ) { }
-
+  constructor(private authService: AuthService) {}
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard(LocalStrategy.key))
@@ -47,7 +44,10 @@ export class AuthController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthGuard(JwtStrategy.key))
   @Post('/update-password')
-  async updatePassword(@Request() req, @Body() updatePasswordDto: UpdatePasswordDto) {
+  async updatePassword(
+    @Request() req,
+    @Body() updatePasswordDto: UpdatePasswordDto,
+  ) {
     const session = req.user;
 
     const { user } = session as unknown as {

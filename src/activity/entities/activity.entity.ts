@@ -3,14 +3,14 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 export class Activity {
-  title: string; 
-  decs: string; 
-  credit: number; 
+  title: string;
+  decs: string;
+  credit: number;
   author: string;
 }
 
-@Injectable() 
-@Schema({ timestamps: true, autoIndex: true }) 
+@Injectable()
+@Schema({ timestamps: true, autoIndex: true })
 export class ActivityModel implements Activity {
   @Prop({ required: true, type: String })
   title;
