@@ -3,9 +3,18 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TodoModel, TodoSchema } from '@/todo/entities/todo.entity';
 import { UserModel, UserSchema } from '@/user/entities/user.entity';
 import { AuthModel, AuthSchema } from '@/auth/entities/auth.entity';
-import { ActivityModel, ActivitySchema } from '@/activity/entities/activity.entity';
-import { ActivityAuditLogModel, ActivityAuditLogSchema } from '@/activity/entities/activity-audit-log.entity';
-import { TransferAuditLogModel, TransferAuditLogSchema } from '@/transfer-audit-log/entities/transfer-audit-log.entity';
+import {
+  ActivityModel,
+  ActivitySchema,
+} from '@/activity/entities/activity.entity';
+import {
+  ActivityAuditLogModel,
+  ActivityAuditLogSchema,
+} from '@/activity/entities/activity-audit-log.entity';
+import {
+  TransferAuditLogModel,
+  TransferAuditLogSchema,
+} from '@/transfer-audit-log/entities/transfer-audit-log.entity';
 import { TransferAuditLogService } from './transfer-audit-log.service';
 
 @Module({
@@ -20,6 +29,6 @@ import { TransferAuditLogService } from './transfer-audit-log.service';
     ]),
   ],
   providers: [TransferAuditLogService],
-  exports: [TransferAuditLogService]
+  exports: [TransferAuditLogService],
 })
-export class TransferAuditLogModule { }
+export class TransferAuditLogModule {}

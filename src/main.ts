@@ -5,7 +5,7 @@ import * as expressListRoutes from 'express-list-routes';
 
 export const globalApply = async (app) => {
   app.setGlobalPrefix('api/');
-}
+};
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -25,12 +25,10 @@ async function bootstrap() {
     )
     .build();
   const document = SwaggerModule.createDocument(app, config, {
-    operationIdFactory: (controllerKey: string, methodKey: string) =>
-      methodKey,
+    operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
   });
 
   SwaggerModule.setup('api', app, document);
-
 
   await app.listen(process.env.PORT || 3000);
 

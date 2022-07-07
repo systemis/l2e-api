@@ -1,12 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import mongoose, { Model } from 'mongoose';
-import {
-  InjectModel,
-  InjectConnection
-} from '@nestjs/mongoose';
+import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import {
   TransferAuditLogDocument,
-  TransferAuditLogModel
+  TransferAuditLogModel,
 } from './entities/transfer-audit-log.entity';
 import { CreateTransferAuditLogDto } from './dto/create-transfer-audit-log.dto';
 
@@ -17,14 +14,18 @@ export class TransferAuditLogService {
     private TransferAuditLogDocument: Model<TransferAuditLogDocument>,
 
     @InjectConnection()
-    private readonly connection: mongoose.Connection
-  ) { }
+    private readonly connection: mongoose.Connection,
+  ) {}
 
-  async createTransferAuditLog(createTransferAuditLogDto: CreateTransferAuditLogDto) {
-    var transferAuditLog;
+  async createTransferAuditLog(
+    createTransferAuditLogDto: CreateTransferAuditLogDto,
+  ) {
+    let transferAuditLog;
     const session = await this.connection.startSession();
     await session.withTransaction(async () => {
-      const newTransferAuditLog = new this.TransferAuditLogDocument(createTransferAuditLogDto);
+      const newTransferAuditLog = new this.TransferAuditLogDocument(
+        createTransferAuditLogDto,
+      );
       transferAuditLog = await newTransferAuditLog.save();
     });
 

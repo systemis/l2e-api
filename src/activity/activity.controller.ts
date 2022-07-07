@@ -19,10 +19,7 @@ import { CreateActivityDTO } from './dto/create-activity.dto';
 @ApiTags('activity')
 @Controller('activity')
 export class ActivityController {
-  constructor(
-    private activityService: ActivityService
-  ) { }
-
+  constructor(private activityService: ActivityService) {}
 
   @UseGuards(AuthGuard(JwtStrategy.key), RoleGaurd)
   @SetMetadata('roles', [UserRole.admin])

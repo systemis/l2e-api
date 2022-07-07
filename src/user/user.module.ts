@@ -6,8 +6,14 @@ import { UserController } from './user.controller';
 import { TodoModel, TodoSchema } from '@/todo/entities/todo.entity';
 import { UserModel, UserSchema } from '@/user/entities/user.entity';
 import { AuthModel, AuthSchema } from '@/auth/entities/auth.entity';
-import { ActivityModel, ActivitySchema } from '@/activity/entities/activity.entity';
-import { ActivityAuditLogModel, ActivityAuditLogSchema } from '@/activity/entities/activity-audit-log.entity';
+import {
+  ActivityModel,
+  ActivitySchema,
+} from '@/activity/entities/activity.entity';
+import {
+  ActivityAuditLogModel,
+  ActivityAuditLogSchema,
+} from '@/activity/entities/activity-audit-log.entity';
 import { ActivityService } from '@/activity/activity.service';
 
 @Module({
@@ -21,11 +27,8 @@ import { ActivityService } from '@/activity/activity.service';
       { name: ActivityAuditLogModel.name, schema: ActivityAuditLogSchema },
     ]),
   ],
-  providers: [
-    UserService,
-    ActivityService
-  ],
+  providers: [UserService, ActivityService],
   exports: [UserService],
   controllers: [UserController],
 })
-export class UserModule { }
+export class UserModule {}

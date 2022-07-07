@@ -7,6 +7,7 @@ import {
   Patch,
   Param,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
@@ -20,21 +21,21 @@ import { JwtStrategy } from '@/auth/jwt.strategy';
 @ApiTags('todo')
 @Controller('todo')
 export class TodoController {
-  constructor(
-    private todoService: TodoService
-  ) { }
+  constructor(private todoService: TodoService) {}
 
   @UseGuards(AuthGuard(JwtStrategy.key))
   @Post()
   async createTodo(@Request() req, @Body() createTodoDTO: CreateTodoDTO) {
-    createTodoDTO.userId = req.user.id;
+    const { user } = req?.user;
+    createTodoDTO.userId = user.id;
     return await this.todoService.createTodo(createTodoDTO);
   }
 
   @UseGuards(AuthGuard(JwtStrategy.key))
   @Get()
   async getTodos(@Request() req) {
-    const todos = await this.todoService.findTodosByUserId(req.user.id);
+    const { user } = req?.user;
+    const todos = await this.todoService.findTodosByUserId(user.id);
     return todos;
   }
 
@@ -42,9 +43,13 @@ export class TodoController {
   @Get('/title/:title')
   async getTodosByTitle(
     @Request() req,
-    @Body() getTodosByTitleDto: GetTodosByTitleDto
+    @Body() getTodosByTitleDto: GetTodosByTitleDto,
   ) {
-    const todos = await this.todoService.findTodosByTitle(req.user.id, getTodosByTitleDto.title);
+    const { user } = req?.user;
+    const todos = await this.todoService.findTodosByTitle(
+      user.id,
+      getTodosByTitleDto.title,
+    );
     return todos;
   }
 
@@ -53,9 +58,21 @@ export class TodoController {
   async updateTodo(
     @Request() req,
     @Param('todoId') todoId: string,
-    @Body() updateTodoDto: UpdateTodoDto
+    @Body() updateTodoDto: UpdateTodoDto,
   ) {
-    const updatedResut = await this.todoService.updateTodo(req.user.id, todoId, updateTodoDto);
+    const { user } = req?.user;
+    const updatedResut = await this.todoService.updateTodo(
+      user.id,
+      todoId,
+      updateTodoDto,
+    );
+    return updatedResut;
+  }
+
+  @UseGuards(AuthGuard(JwtStrategy.key))
+  @Delete(':todoId')
+  async deleteTodo(@Param('todoId') todoId: string) {
+    const updatedResut = await this.todoService.deleteTodoById(todoId);
     return updatedResut;
   }
 }

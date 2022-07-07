@@ -3,16 +3,16 @@ import { Document } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 
 export enum HashingAlgorithm {
-  BCrypt=10,
+  BCrypt = 10,
 }
 
 export type PasswordCredential = {
-  password: string; 
+  password: string;
   algorithm: HashingAlgorithm;
-}
+};
 
 export class Auth {
-  public userId: string; 
+  public userId: string;
   public credential: PasswordCredential;
 }
 
@@ -20,7 +20,7 @@ export class Auth {
 @Schema({ timestamps: true, autoIndex: true })
 export class AuthModel implements Auth {
   @Prop({ type: String })
-  userId: string; 
+  userId: string;
 
   @Prop({ type: Object })
   credential: PasswordCredential;

@@ -4,7 +4,7 @@ import { HashingAlgorithm } from '@/auth/entities/auth.entity';
 
 @Injectable()
 export class HasingService {
-  getHasher(algorithm: any):BCryptHashing {
+  getHasher(algorithm: any): BCryptHashing {
     if (algorithm === HashingAlgorithm.BCrypt) return new BCryptHashing();
     return null;
   }
